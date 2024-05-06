@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  nginx:
+    ports:
+      - "433:443"
+    restart: always
