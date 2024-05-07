@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   nginx:
     build: ./requirements/nginx/.
@@ -11,5 +9,6 @@ services:
       - inception
 
 networks:
-  name: inception
-  driver: bridge
+  inception:
+    name: inception
+    driver: bridge

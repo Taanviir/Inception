@@ -1,4 +1,4 @@
-DOCKER_COMPOSE_FILE := ./srcs/requirements/docker-compose.yml
+DOCKER_COMPOSE_FILE := ./srcs/docker-compose.yml
 
 all: up
 
