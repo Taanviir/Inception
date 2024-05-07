@@ -10,5 +10,5 @@ COPY conf/nginx.conf /etc/nginx/.
 # Expose port 443
 EXPOSE 443
 
-# Run NGINX in the foreground
+# Run NGINX in the foreground to prevent Docker from exiting
 CMD ["nginx", "-g", "daemon off;"]

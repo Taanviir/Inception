@@ -7,3 +7,9 @@ services:
     ports:
       - "443:443"
     restart: always
+    networks:
+      - inception
+
+networks:
+  name: inception
+  driver: bridge
