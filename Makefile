@@ -1,13 +1,28 @@
-DOCKER_COMPOSE_FILE := ./srcs/docker-compose.yml
+DOCKER_COMPOSE := docker compose
+DOCKER_COMPOSE_FILE := -f ./srcs/docker-compose.yml
 
 all: up
 
-# setting up docker containers in detached mode
+# setting up docker containers by building images first then running in detached mode
 up:
-	docker compose -f $(DOCKER_COMPOSE_FILE) up --detach
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) up --build --detach
 
-# removing all docker containers, network, images and volumes
+# stopping and removing all docker containers, network, images and volumes
 down:
-	docker compose -f $(DOCKER_COMPOSE_FILE) down --rmi all -v
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) down --rmi all --volumes
 
-.PHONY: all up down
+# building docker images
+build:
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) build
+
+info:
+	@echo "Container Info:"
+	@docker ps -a
+	@echo
+	@echo "Images Info:"
+	@docker images
+	@echo
+	@echo "Network Info:"
+	@docker network ls
+
+.PHONY: all up down build info
