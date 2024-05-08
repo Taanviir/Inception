@@ -1,10 +1,12 @@
 services:
   nginx:
-    build: ./requirements/nginx/.
+    build:
+      context: ./requirements/nginx
+    image: nginx
     container_name: nginx
     ports:
-      - "443:443"
-    restart: always
+      - "443:443" # Host can access site through port 443 into containters 443
+    restart: on-failure
     networks:
       - inception
 
