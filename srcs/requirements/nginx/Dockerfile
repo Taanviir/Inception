@@ -1,3 +1,5 @@
+# NGINX Dockerfile
+
 # Using penultimate stable Alpine version as base image
 FROM alpine:3.18
 
