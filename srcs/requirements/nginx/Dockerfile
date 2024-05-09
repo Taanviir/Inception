@@ -7,7 +7,7 @@ FROM alpine:3.18
 RUN apk update && apk add nginx openssl
 
 # Copy NGINX config file
-COPY conf/nginx.conf /etc/nginx/.
+COPY conf/nginx.conf /etc/nginx/http.d/.
 
 # Expose port 443
 EXPOSE 443
