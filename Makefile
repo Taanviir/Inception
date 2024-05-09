@@ -15,6 +15,10 @@ down:
 build:
 	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) build
 
+# dry run to check if docker compose works
+dry-run:
+	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) --dry-run up --build -d
+
 info:
 	@echo "Container Info:"
 	@docker ps -a
@@ -25,4 +29,4 @@ info:
 	@echo "Network Info:"
 	@docker network ls
 
-.PHONY: all up down build info
+.PHONY: all up down build dry-run info
