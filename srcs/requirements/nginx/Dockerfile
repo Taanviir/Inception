@@ -4,7 +4,7 @@
 FROM alpine:3.18
 
 # Updating packages and installing NGINX
-RUN apk update && apk add nginx
+RUN apk update && apk add nginx openssl
 
 # Copy NGINX config file
 COPY conf/nginx.conf /etc/nginx/.
