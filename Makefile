@@ -28,5 +28,8 @@ info:
 	@echo
 	@echo "Network Info:"
 	@docker network ls
+	@echo
+	@echo "Volume Info:"
+	@docker volume ls
 
 .PHONY: all up down build dry-run info
