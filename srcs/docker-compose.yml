@@ -29,7 +29,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     restart: on-failure
     volumes:
-      - wordpress_files:/var/www/html
+      - ./web:/var/www/html
     networks:
       - inception
     depends_on:
@@ -44,7 +44,7 @@ services:
       - 443:443 # Host can access site through port 443 into containters 443
     restart: on-failure
     volumes:
-      - wordpress_files:/var/lib/nginx/html
+      - ./web:/var/www/html
     networks:
       - inception
     depends_on:
