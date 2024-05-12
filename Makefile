@@ -35,6 +35,9 @@ info:
 logs-%:
 	$(DOCKER_COMPOSE) logs -f $*
 
+exec-%:
+	$(DOCKER_COMPOSE) exec -it $* /bin/sh
+
 alpine:
 	docker run -it --name=alpine-exec alpine:3.18 /bin/sh
 	docker rm alpine-exec
