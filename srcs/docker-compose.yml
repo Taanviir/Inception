@@ -28,6 +28,8 @@ services:
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     restart: on-failure
+    volumes:
+      - wordpress_files:/var/www/html
     networks:
       - inception
     depends_on:
@@ -41,6 +43,8 @@ services:
     ports:
       - 443:443 # Host can access site through port 443 into containters 443
     restart: on-failure
+    volumes:
+      - wordpress_files:/var/lib/nginx/html
     networks:
       - inception
     depends_on:
@@ -48,7 +52,9 @@ services:
 
 volumes:
   mariadb_data:
+    name: "mariadb_data"
   wordpress_files:
+    name: "wordpress_files"
 
 networks:
   inception:

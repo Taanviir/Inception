@@ -1,23 +1,22 @@
-DOCKER_COMPOSE := docker compose
-DOCKER_COMPOSE_FILE := -f ./srcs/docker-compose.yml
+DOCKER_COMPOSE := docker compose -f ./srcs/docker-compose.yml
 
 all: up
 
 # setting up docker containers by building images first then running in detached mode
 up:
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) up --build --detach
+	$(DOCKER_COMPOSE) up --build --detach
 
 # stopping and removing all docker containers, network, images and volumes
 down:
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) down --rmi all --volumes
+	$(DOCKER_COMPOSE) down --rmi all --volumes
 
 # building docker images
 build:
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) build
+	$(DOCKER_COMPOSE) build
 
 # dry run to check if docker compose works
 dry-run:
-	$(DOCKER_COMPOSE) $(DOCKER_COMPOSE_FILE) --dry-run up --build -d
+	$(DOCKER_COMPOSE) --dry-run up --build -d
 
 info:
 	@echo "Container Info:"
@@ -32,4 +31,12 @@ info:
 	@echo "Volume Info:"
 	@docker volume ls
 
-.PHONY: all up down build dry-run info
+# get logs for specific service
+logs-%:
+	$(DOCKER_COMPOSE) logs -f $*
+
+alpine:
+	docker run -it --name=alpine-exec alpine:3.18 /bin/sh
+	docker rm alpine-exec
+
+.PHONY: all up down build dry-run info logs-% alpine
