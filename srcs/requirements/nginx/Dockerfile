@@ -6,8 +6,7 @@ FROM alpine:3.18
 RUN apk update && apk add --no-cache nginx openssl
 
 # making dir to store html and ssl files
-RUN mkdir -p /var/www/html
-RUN mkdir /etc/nginx/ssl
+RUN mkdir -p /var/www/html /etc/nginx/ssl
 
 # Requesting for a self signed certificate, valid for 1 year, in the ssl dir.
 RUN openssl req -x509 -newkey rsa:2048 -sha256 -days 365 -nodes \
