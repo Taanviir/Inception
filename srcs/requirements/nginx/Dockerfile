@@ -5,6 +5,9 @@ FROM alpine:3.18
 # Updating packages and installing NGINX and openssl
 RUN apk update && apk add --no-cache nginx openssl
 
+# Expose port 443
+EXPOSE 443
+
 # making dir to store html and ssl files
 RUN mkdir -p /var/www/html /etc/nginx/ssl
 
@@ -18,9 +21,6 @@ RUN openssl req -x509 -newkey rsa:2048 -sha256 -days 365 -nodes \
 
 # Copy NGINX config file
 COPY conf/wordpress.conf /etc/nginx/http.d
-
-# Expose port 443
-EXPOSE 443
 
 # Run NGINX in the foreground to prevent Docker from exiting
 CMD ["nginx", "-g", "daemon off;"]
