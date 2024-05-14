@@ -4,6 +4,9 @@ all: up
 
 # setting up docker containers by building images first then running in detached mode
 up:
+	@if [ ! -d /home/$(USER)/data/wordpress ] || [ ! -d /home/$(USER)/data/database ]; then \
+		mkdir -p /home/$(USER)/data/wordpress /home/$(USER)/data/database; \
+	fi
 	$(DOCKER_COMPOSE) up --build --detach
 
 # stopping and removing all docker containers, network, images and volumes
@@ -35,11 +38,16 @@ info:
 logs-%:
 	$(DOCKER_COMPOSE) logs -f $*
 
+# run container in shell
 exec-%:
 	$(DOCKER_COMPOSE) exec -it $* /bin/sh
 
+# run alpine container for testing, To be removed
 alpine:
 	docker run -it --name=alpine-exec alpine:3.18 /bin/sh
 	docker rm alpine-exec
 
-.PHONY: all up down build dry-run info logs-% alpine
+clean: down
+	rm -rf /home/$(USER)/data
+
+.PHONY: all up down build dry-run info logs-% alpine clean
