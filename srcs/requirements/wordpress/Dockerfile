@@ -11,7 +11,12 @@ EXPOSE 9000
 # making dir to store html files
 RUN mkdir -p /var/www/html
 
+# install wp-cli
+# RUN 
 
 COPY conf/www.conf /etc/php81/php-fpm.d
+COPY tools/run.sh  /var/www/html
 
-CMD ["php-fpm81", "-F"]
+WORKDIR /var/www/html
+
+CMD ["./run.sh"]
