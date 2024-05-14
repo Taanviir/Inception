@@ -9,8 +9,7 @@ RUN apk update && apk add --no-cache mariadb mariadb-client
 EXPOSE 3306
 
 # copying required files into respective directories
-COPY tools/init.sql /var/lib/mysql
-COPY tools/run.sh   /var/lib/mysql
+COPY tools/run.sh /var/lib/mysql
 
 # set current working dir to /var/lib/mysql
 WORKDIR /var/lib/mysql

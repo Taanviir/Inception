@@ -2,7 +2,7 @@
 
 echo "[info] Starting MySQL initialization"
 
-MYSQLD_DIR=/var/run/mysqld
+MYSQLD_DIR=/run/mysqld
 MYSQL_DIR=/var/lib/mysql
 
 if [ ! -d $MYSQLD_DIR ]; then
@@ -17,7 +17,7 @@ fi
 
 # changing ownership of directories to mysql user and group
 chown mysql:mysql $MYSQLD_DIR $MYSQL_DIR
-echo "[info] Ownership of /var/lib/mysql and /var/run/mysqld changed to mysql user and group"
+echo "[info] Ownership of $MYSQL_DIR and $MYSQLD_DIR changed to mysql user and group"
 
 # checking for data dir and then initializing mysql tables if not found
 if [ ! -d $MYSQL_DIR/mysql ]; then
@@ -31,14 +31,45 @@ if [ ! -d $MYSQL_DIR/mysql ]; then
 fi
 
 SQL_FILE=init.sql
-echo "[info] Reading SQL information from $SQL_FILE"
+echo "[info] Making $SQL_FILE"
+cat << EOF > $SQL_FILE
+-- flush privileges for root user
+FLUSH PRIVILEGES;
+
+-- remove any empty users
+DELETE FROM mysql.user WHERE user='';
+
+-- remove the test database
+DROP DATABASE IF EXISTS test;
+
+-- remove any entry related to test in db table
+DELETE FROM mysql.db WHERE db='test';
+
+-- restrict remote access to root
+DELETE FROM mysql.user WHERE user='root' AND host NOT IN ('localhost', '127.0.0.1', '::1');
+
+-- changing the root password
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$MARIADB_ROOT_PASSWORD';
+
+-- make new database with env variable as name
+CREATE DATABASE IF NOT EXISTS \`$MARIADB_DATABASE\`;
+
+-- make new user with specific name and grant access from any host identified by set password
+CREATE USER IF NOT EXISTS '$WP_DB_USER'@'%' IDENTIFIED by '$WP_DB_PASSWORD';
+
+-- grants all privileges on wordpress database to the user on any host
+GRANT ALL PRIVILEGES ON \`$MARIADB_DATABASE\`.* TO '$WP_DB_USER'@'%';
+FLUSH PRIVILEGES;
+EOF
 
 MYSQL_OPTIONS="--user=mysql --skip-name-resolve --skip-networking=0 --bind-address=0.0.0.0"
 
 # Run the SQL daemon to create the database and user and run the daemon in bootstrap mode to init tables
-mysqld $MYSQL_OPTIONS --verbose=0 --bootstrap < $SQL_FILE
+mysqld $MYSQL_OPTIONS --bootstrap < $SQL_FILE
 echo "[info] MySQLD databases are now initialized"
+
+rm $SQL_FILE
 
 # Run the SQL server in the foreground
 echo "[info] MySQL server is now running..."
-mysqld $MYSQL_OPTIONS --console < $SQL_FILE
+mysqld $MYSQL_OPTIONS --console
