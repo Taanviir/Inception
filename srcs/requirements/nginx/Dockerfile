@@ -3,7 +3,7 @@
 FROM alpine:3.18
 
 # Updating packages and installing NGINX and openssl
-RUN apk update && apk add --no-cache nginx openssl
+RUN apk --update add --no-cache nginx openssl
 
 # Expose port 443
 EXPOSE 443
