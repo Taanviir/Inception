@@ -4,7 +4,7 @@ all: up
 
 # setting up docker containers by building images first then running in detached mode
 up:
-	@if [ ! -d /home/$(USER)/data/wordpress ] || [ ! -d /home/$(USER)/data/database ]; then \
+	@if [ ! -d /home/$(USER)/data ]; then \
 		mkdir -p /home/$(USER)/data/wordpress /home/$(USER)/data/database; \
 	fi
 	$(DOCKER_COMPOSE) up --build --detach
@@ -15,7 +15,7 @@ down:
 
 # building docker images
 build:
-	$(DOCKER_COMPOSE) build
+	$(DOCKER_COMPOSE) build --no-cache
 
 # dry run to check if docker compose works
 dry-run:
