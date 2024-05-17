@@ -11,15 +11,36 @@ mv wp-cli.phar /usr/bin/wp
 if ! wp core is-installed 2>/dev/null; then
     echo "[info] wp is not installed, downloading wordpress files"
     wp core download --allow-root
+
+    echo "[info] creating wordpress config file"
+    wp config create --allow-root \
+                    --dbname=$MARIADB_DATABASE \
+                    --dbuser=$WP_DB_USER \
+                    --dbpass=$WP_DB_PASSWORD \
+                    --dbhost=$WP_DB_HOST
+    if [ $? -eq 0 ]; then
+        echo "[info] wp-config.php created successfully"
+    else
+        echo "[error] wp-config.php creation failed"
+        return 1
+    fi
+
+    echo "[info] installing wordpress files"
+    wp core install --allow-root \
+                    --title=inception \
+                    --url=$DOMAIN_NAME \
+                    --admin_user=$WP_ADMIN \
+                    --admin_password=$WP_ADMIN_PASSWORD \
+                    --admin_email=boss@boss.com
+    if [ $? -eq 0 ]; then
+        echo "[info] WordPress installed successfully"
+    else
+        echo "[error] WordPress installation failed"
+        return 1
+    fi
 else
     echo "[info] wp is already installed"
 fi
 
-echo "[info] creating wordpress config file"
-wp config create --allow-root \
-                 --dbname=$MARIADB_DATABASE \
-                 --dbuser=$WP_DB_USER \
-                 --dbpass=$WP_DB_PASSWORD \
-                 --dbhost=$WP_DB_HOST
-
+echo "[info] Running PHP-FPM"
 php-fpm81 -F

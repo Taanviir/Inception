@@ -2,8 +2,8 @@
 
 FROM alpine:3.18
 
-# Updating packages and installing PHP, PHP-Phar, PHP-FPM, PHP-MySQLI
-RUN apk update && apk add --no-cache php php-phar php-fpm php-mysqli
+# Updating packages and installing PHP, PHP-Phar, PHP-FPM, PHP-MySQLI, PHP-iconv
+RUN apk update && apk add --no-cache php php-phar php-fpm php-mysqli php-iconv
 
 # Expose port 9000
 EXPOSE 9000
