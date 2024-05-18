@@ -11,7 +11,7 @@ up:
 
 # stopping and removing all docker containers, network, images and volumes
 down:
-	$(DOCKER_COMPOSE) down --rmi all --volumes
+	$(DOCKER_COMPOSE) down
 
 # building docker images
 build:
@@ -42,9 +42,7 @@ logs-%:
 exec-%:
 	$(DOCKER_COMPOSE) exec -it $* /bin/sh
 
-# run alpine container for testing, To be removed
-alpine:
-	docker run -it --name=alpine-exec alpine:3.18 /bin/sh
-	docker rm alpine-exec
+clean:
+	$(DOCKER_COMPOSE) down --rmi all --volumes
 
-.PHONY: all up down build dry-run info logs-% alpine
+.PHONY: all up down build dry-run info logs-% clean
