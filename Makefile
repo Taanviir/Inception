@@ -4,7 +4,7 @@ all: up
 
 # setting up docker containers by building images first then running in detached mode
 up:
-	@if [ ! -d /home/$(USER)/data ]; then \
+	@if [ ! -d /home/$(USER)/data/wordpress ] || [ ! -d /home/$(USER)/data/database ]; then \
 		mkdir -p /home/$(USER)/data/wordpress /home/$(USER)/data/database; \
 	fi
 	$(DOCKER_COMPOSE) up --build --detach
@@ -47,7 +47,4 @@ alpine:
 	docker run -it --name=alpine-exec alpine:3.18 /bin/sh
 	docker rm alpine-exec
 
-clean: down
-	rm -rf /home/$(USER)/data
-
-.PHONY: all up down build dry-run info logs-% alpine clean
+.PHONY: all up down build dry-run info logs-% alpine
