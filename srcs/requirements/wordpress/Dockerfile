@@ -36,5 +36,6 @@ RUN mkdir -p /var/www/html/wordpress
 COPY tools/run.sh /var/www/html/wordpress
 
 WORKDIR /var/www/html/wordpress
+RUN chmod +x run.sh
 
 CMD ["./run.sh"]

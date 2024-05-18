@@ -13,5 +13,6 @@ COPY tools/run.sh /var/lib/mysql
 
 # set current working dir to /var/lib/mysql
 WORKDIR /var/lib/mysql
+RUN chmod +x run.sh
 
 CMD ["./run.sh"]
