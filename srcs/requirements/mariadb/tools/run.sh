@@ -55,10 +55,10 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '$MARIADB_ROOT_PASSWORD';
 CREATE DATABASE IF NOT EXISTS \`$MARIADB_DATABASE\`;
 
 -- make new user with specific name and grant access from any host identified by set password
-CREATE USER IF NOT EXISTS '$WP_DB_USER'@'%' IDENTIFIED by '$WP_DB_PASSWORD';
+CREATE USER IF NOT EXISTS '$MARIADB_USER'@'%' IDENTIFIED by '$MARIADB_USER_PASSWORD';
 
 -- grants all privileges on wordpress database to the user on any host
-GRANT ALL PRIVILEGES ON \`$MARIADB_DATABASE\`.* TO '$WP_DB_USER'@'%';
+GRANT ALL PRIVILEGES ON \`$MARIADB_DATABASE\`.* TO '$MARIADB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 

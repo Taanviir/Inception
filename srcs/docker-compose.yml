@@ -4,11 +4,6 @@ services:
     image: mariadb
     container_name: mariadb
     env_file: .env
-    environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ${MARIADB_DATABASE}
-      WP_DB_USER: ${WP_DB_USER}
-      WP_DB_PASSWORD: ${WP_DB_PASSWORD}
     restart: on-failure
     volumes:
       - db-data:/var/lib/mysql
@@ -20,16 +15,9 @@ services:
     image: wordpress
     container_name: wordpress
     env_file: .env
-    environment:
-      WP_DB_HOST: ${WP_DB_HOST}
-      WP_DB_USER: ${WP_DB_USER}
-      WP_DB_PASSWORD: ${WP_DB_PASSWORD}
-      WP_ADMIN: ${WP_ADMIN}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
-      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
     restart: on-failure
     volumes:
-      - wp-data:/var/www/html
+      - wp-data:/var/www/html/wordpress
     networks:
       - inception
     depends_on:
@@ -43,7 +31,7 @@ services:
       - 443:443 # Host can access site through port 443 into containters 443
     restart: on-failure
     volumes:
-      - wp-data:/var/www/html
+      - wp-data:/var/www/html/wordpress
     networks:
       - inception
     depends_on:
