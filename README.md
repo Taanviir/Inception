@@ -1,5 +1,11 @@
 # Inception
 
+## Table of Contents
+- [Description](#description)
+- [Project Overview](#project-overview)
+- [Usage](#usage)
+- [Resources](#resources)
+
 ## Description
 The Inception project aims to broaden your knowledge of system administration by using Docker. You will virtualize several Docker images, creating them in your new personal virtual machine. The project consists of setting up a small infrastructure composed of different services under specific rules, all done in a virtual machine using Docker Compose.
 
