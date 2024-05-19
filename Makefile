@@ -9,13 +9,16 @@ up:
 	fi
 	$(DOCKER_COMPOSE) up --build --detach
 
-# stopping and removing all docker containers, network, images and volumes
+# stopping and removing all docker containers
 down:
 	$(DOCKER_COMPOSE) down
 
 # building docker images
 build:
 	$(DOCKER_COMPOSE) build --no-cache
+
+clean:
+	$(DOCKER_COMPOSE) down --rmi all --volumes
 
 # dry run to check if docker compose works
 dry-run:
@@ -42,7 +45,4 @@ logs-%:
 exec-%:
 	$(DOCKER_COMPOSE) exec -it $* /bin/sh
 
-clean:
-	$(DOCKER_COMPOSE) down --rmi all --volumes
-
-.PHONY: all up down build dry-run info logs-% clean
+.PHONY: all up down build clean dry-run info logs-% exec-%
